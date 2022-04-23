@@ -20,6 +20,7 @@ body {
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
+    text-align: center;
 }
 
 .styled-table tbody tr {
@@ -46,7 +47,7 @@ body {
     box-sizing: border-box;
     height: 200px;
     width: 700px;
-    margin: auto;
+    margin: 20px auto;
     text-align: center;
     
 }
@@ -176,53 +177,53 @@ body {
     width: 900px;
     background-color: #009879;
     /* margin-bottom: 10px; */
-    display: none;
-    position: fixed;
 }
 
 .inp {
     width: 100px;
     margin-top: 6px;
-    margin-left: 10px;
+    margin-left: 5px;
     /* border-radius: 15px; */
     outline: none;
     border: none;
     text-align: center;
 }
-
+table thead tr th{
+    text-align: center;
+}
 #myInput0 {
-    width: 58px;
-    margin-left: 2px;
+    width: 35px;
+    margin-left: 0px;
 }
 
 #myInput1 {
-    width: 62px;
-    margin-left: 15px;
+    width: 42px;
+    margin-left: 0px;
 }
 
 #myInput2 {
     width: 60px;
-    margin-left: 20px;
+    margin-left: 0px;
 }
 
 #myInput3 {
     width: 245px;
-    margin-left: 50px;
+    margin-left: 0px;
 }
 
 #myInput4 {
-    width: 40px;
-    margin-left: 38px;
+    width: 60px;
+    margin-left: 0px;
 }
 
 #myInput5 {
-    width: 80px;
-    margin-left: 60px;
+    width: 95px;
+    margin-left: 0px;
 }
 
 #myInput6 {
-    width: 60px;
-    margin-left: 50px;
+    width: 51px;
+    margin-left: 0px;
 }
 
 /* css for loader */
