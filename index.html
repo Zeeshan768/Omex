@@ -15,46 +15,39 @@
 <body>
     <div class="form">
         <div class="title">Welcome</div>
-         <div class="subtitle">Let's Fetch Your Desire data!</div> 
-         <div class="row row1">
-        <div class="input-container ic1">
-            <input name="ssid" value="7,5,9" id="ssid" placeholder="SSID" class="input first" type="text" placeholder="Enter SSID" />
-            <div class="cut">SSID</div>
+        <div class="subtitle">Let's Fetch Your Desire data!</div>
+        <div class="row row1">
+            <div class="input-container ic1">
+                <input name="ssid" value="7,5,9" id="ssid" placeholder="SSID" class="input first" type="text"
+                    placeholder="Enter SSID" />
+                <div class="cut">SSID</div>
+            </div>
+            <div class="input-container ic2">
+                <input name="secid" value="FB,AAPL,FB" id="secid" placeholder="SECID" class="input" type="text"
+                    placeholder="Enter SECID" />
+                <div class="cut">SECID</div>
+            </div>
+            <div class="input-container ic2">
+                <input type="text" name="currency" id="currency" value="USD,USD,USD" placeholder="Enter"
+                    class="input" />
+                <div class="cut cut-short">CURRENCY</div>
+            </div>
+            <button type="text" onClick="fetchData()" class="submit">submit</button>
         </div>
-        <div class="input-container ic2">
-            <input name="secid" value="FB,AAPL,FB" id="secid" placeholder="SECID" class="input" type="text"
-                placeholder="Enter SECID" />
-            <div class="cut">SECID</div>
-        </div>
-        <div class="input-container ic2">
-            <input type="text" name="currency" id="currency" value="USD,USD,USD" placeholder="Enter" class="input" />
-            <div class="cut cut-short">CURRENCY</div>
-        </div>
-        <button type="text" onClick="fetchData()" class="submit">submit</button>
-    </div>
-       
+
     </div>
     <table id="table" class="styled-table">
         <thead>
-
+           
         </thead>
-        <tr>
-            <div class="search">
-                <input type="text" class="inp" id="myInput0" onkeyup="myFunction(this, 0)"  title="Type" placeholder="SSID">
-                <input type="text" class="inp" id="myInput1" onkeyup="myFunction(this, 1)"  title="Type" placeholder="SECId">
-                <input type="text" class="inp" id="myInput2" onkeyup="myFunction(this, 2)"  title="Type" placeholder="Currency">
-                <input type="text" class="inp" id="myInput3" onkeyup="myFunction(this, 3)"  title="Type" placeholder="msd_name">
-                <input type="text" class="inp" id="myInput4" onkeyup="myFunction(this, 4)"  title="Type" placeholder="SECId48">
-                <input type="text" class="inp" id="myInput5" onkeyup="myFunction(this, 5)"  title="Type" placeholder="SECId48Value">
-                <input type="text" class="inp" id="myInput6" onkeyup="myFunction(this, 6)"  title="Type" placeholder="Country">
-            </div>
-        </tr>
+
         <tbody>
 
         </tbody>
 
     </table>
-   
+    <button type="text" class="submit" onclick="exportTableToExcel('table','members-data')">Export Data</button>
+
     <div hidden id="spinner"></div>
 
 </body>
@@ -67,7 +60,6 @@
     var list;
     const spinner = document.getElementById("spinner");
     async function fetchData() {
-
         const ssid = document.getElementById("ssid").value;
         const secid = document.getElementById("secid").value;
         const currency = document.getElementById("currency").value;
@@ -90,6 +82,22 @@
             constructTable()
             spinner.removeAttribute('hidden');
         }
+        $.fn.switchColumns = function (col1, col2) {
+            var $this = this,
+                $tr = $this.find('tr');
+
+            $tr.each(function (i, ele) {
+                var $ele = $(ele),
+                    $td = $ele.find('td'),
+                    $tdt;
+
+                $tdt = $td.eq(col1).clone();
+                $td.eq(col1).html($td.eq(col2).html());
+                $td.eq(col2).html($tdt.html());
+            });
+        };
+
+        $('#table').switchColumns(3, 0);
 
 
     }
@@ -125,6 +133,80 @@
         $("thead").append(header);
 
     }
+    function constructSearch() {
+      $("table thead").append(`<tr id="search">
+          <td>
+            <input
+              type="text"
+              class="inp"
+              id="myInput0"
+              onkeyup="myFunction(this, 0)"
+              title="Type"
+              placeholder="SSID"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="inp"
+              id="myInput1"
+              onkeyup="myFunction(this, 1)"
+              title="Type"
+              placeholder="SECId"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="inp"
+              id="myInput2"
+              onkeyup="myFunction(this, 2)"
+              title="Type"
+              placeholder="Currency"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="inp"
+              id="myInput3"
+              onkeyup="myFunction(this, 3)"
+              title="Type"
+              placeholder="msd_name"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="inp"
+              id="myInput4"
+              onkeyup="myFunction(this, 4)"
+              title="Type"
+              placeholder="SECId48"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="inp"
+              id="myInput5"
+              onkeyup="myFunction(this, 5)"
+              title="Type"
+              placeholder="SECId48Value"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="inp"
+              id="myInput6"
+              onkeyup="myFunction(this, 6)"
+              title="Type"
+              placeholder="Country"
+            />
+          </td>
+        </tr>`);
+    }
 
     function constructBody(list) {
         for (var j = 0; j < list.length; j++) {
@@ -142,161 +224,57 @@
         document.getElementById("table").innerHTML = `<thead></thead><tbody></tbody>`
         list = await fetchList(body)
         constructHeader(list[0])
+        constructSearch();
         constructBody(list)
     }
-    let filters = ["",""];
+    let filters = ["", ""];
 
-function myFunction(thisInput, thisIndex) {
-  filters[thisIndex] = thisInput.value.toUpperCase();
-  
-  filterTable();
-}
+    function myFunction(thisInput, thisIndex) {
+        filters[thisIndex] = thisInput.value.toUpperCase();
 
-function filterTable() {
-  var table = document.getElementById("table");
-  var rows = Object.values(table.getElementsByTagName("tr"));
-  
-  for(var rowItr=1; rowItr < rows.length; rowItr++) {
-    var row = rows[rowItr];
-    var cells = Object.values(row.getElementsByTagName("td"));
-    
-    
-    var isRowVisible = filters.every((filter, filterIndex) => {
-        var cell = cells[filterIndex];
-        var txtValue = cell.textContent || cell.innerText;
+        filterTable();
+    }
 
-        return filter === "" || txtValue.toUpperCase().indexOf(filter) > -1;
-    });
-    
-    row.style.display = isRowVisible ? "" : "none";
-  };
-}
-    // function myFunction0() {
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("myInput0");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("table");
-    //     tr = table.getElementsByTagName("tr");
-    //     for (i = 0; i < tr.length; i++) {
-    //         td = tr[i].getElementsByTagName("td")[0];
-    //         if (td) {
-    //             txtValue = td.textContent || td.innerText;
-    //             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                 tr[i].style.display = "";
-    //             } else {
-    //                 tr[i].style.display = "none";
-    //             }
-    //         }
-    //     }
-    // }
-    // function myFunction1() {
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("myInput1");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("table");
-    //     tr = table.getElementsByTagName("tr");
-    //     for (i = 0; i < tr.length; i++) {
-    //         td = tr[i].getElementsByTagName("td")[1];
-    //         if (td) {
-    //             txtValue = td.textContent || td.innerText;
-    //             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                 tr[i].style.display = "";
-    //             } else {
-    //                 tr[i].style.display = "none";
-    //             }
-    //         }
-    //     }
-    // }
-    // function myFunction2() {
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("myInput2");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("table");
-    //     tr = table.getElementsByTagName("tr");
-    //     for (i = 0; i < tr.length; i++) {
-    //         td = tr[i].getElementsByTagName("td")[2];
-    //         if (td) {
-    //             txtValue = td.textContent || td.innerText;
-    //             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                 tr[i].style.display = "";
-    //             } else {
-    //                 tr[i].style.display = "none";
-    //             }
-    //         }
-    //     }
-    // }
-    // function myFunction3() {
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("myInput3");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("table");
-    //     tr = table.getElementsByTagName("tr");
-    //     for (i = 0; i < tr.length; i++) {
-    //         td = tr[i].getElementsByTagName("td")[3];
-    //         if (td) {
-    //             txtValue = td.textContent || td.innerText;
-    //             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                 tr[i].style.display = "";
-    //             } else {
-    //                 tr[i].style.display = "none";
-    //             }
-    //         }
-    //     }
-    // }
-    // function myFunction4() {
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("myInput4");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("table");
-    //     tr = table.getElementsByTagName("tr");
-    //     for (i = 0; i < tr.length; i++) {
-    //         td = tr[i].getElementsByTagName("td")[4];
-    //         if (td) {
-    //             txtValue = td.textContent || td.innerText;
-    //             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                 tr[i].style.display = "";
-    //             } else {
-    //                 tr[i].style.display = "none";
-    //             }
-    //         }
-    //     }
-    // }
-    // function myFunction5() {
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("myInput5");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("table");
-    //     tr = table.getElementsByTagName("tr");
-    //     for (i = 0; i < tr.length; i++) {
-    //         td = tr[i].getElementsByTagName("td")[5];
-    //         if (td) {
-    //             txtValue = td.textContent || td.innerText;
-    //             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                 tr[i].style.display = "";
-    //             } else {
-    //                 tr[i].style.display = "none";
-    //             }
-    //         }
-    //     }
-    // }
-    // function myFunction6() {
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("myInput6");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("table");
-    //     tr = table.getElementsByTagName("tr");
-    //     for (i = 0; i < tr.length; i++) {
-    //         td = tr[i].getElementsByTagName("td")[6];
-    //         if (td) {
-    //             txtValue = td.textContent || td.innerText;
-    //             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                 tr[i].style.display = "";
-    //             } else {
-    //                 tr[i].style.display = "none";
-    //             }
-    //         }
-    //     }
-    // }
+    function filterTable() {
+        var table = document.getElementById("table");
+        var rows = Object.values(table.getElementsByTagName("tr"));
+
+        for (var rowItr = 1; rowItr < rows.length; rowItr++) {
+            var row = rows[rowItr];
+            var cells = Object.values(row.getElementsByTagName("td"));
+
+
+            var isRowVisible = filters.every((filter, filterIndex) => {
+                var cell = cells[filterIndex];
+                var txtValue = cell.textContent || cell.innerText;
+
+                return filter === "" || txtValue.toUpperCase().indexOf(filter) > -1;
+            });
+
+            row.style.display = isRowVisible ? "" : "none";
+        };
+    }
+    function exportTableToExcel(tableID, filename = '') {
+        var downloadLink;
+        var dataType = 'application/vnd.ms-excel';
+        var tableselect = document.getElementById(table);
+        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+        filename = filename ? filename + '.xls' : 'excel_data.xls';
+        download = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        if (navigator.msSaveOrOpenBlob) {
+            var blob = new Blob(['\ufeff', tableHTML], {
+                type: dataType
+            });
+            navigator.msSaveOrOpenBl; ob(blob, filename);
+        } else {
+            downloadLink.href = 'data' + dataType + ',' + tableHTML;
+
+            downloadLink.download = filename;
+            downloadLink.click();
+        }
+
+    }
 
 </script>
 
