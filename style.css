@@ -177,6 +177,7 @@ body {
     background-color: #009879;
     /* margin-bottom: 10px; */
     display: none;
+    position: fixed;
 }
 
 .inp {
