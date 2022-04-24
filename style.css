@@ -1,5 +1,7 @@
 body {
     background-color: #06b;
+    margin: 0;
+    padding: 0;
 }
 
 .styled-table {
@@ -51,15 +53,25 @@ body {
     text-align: center;
     
 }
+#form{
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: 200px;
+    width: 700px;
+    margin: 20px auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
 #downloadexcel{
 
-margin: 10px 0px 0px 295px;
+    margin: 0px 100px 0px 0px;
 width: 200px;
 }
 
 #downloadpdf{
     width: 200px;
-    margin: 10px 0px 0px 285px;    
+    margin: 0px;
 }
 .image{
     fill: #009879;
