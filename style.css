@@ -51,6 +51,17 @@ body {
     text-align: center;
     
 }
+#downloadexcel{
+
+margin: 10px 0px 0px 295px;
+width: 200px;
+}
+#downloadpdf{
+    width: 200px;
+    margin: 10px 0px 0px 285px;
+  
+    
+}
 .row1{
     
     margin-left: -146px !important;
