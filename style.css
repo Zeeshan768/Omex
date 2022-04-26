@@ -56,7 +56,12 @@ body.loading .overlay {
       padding: 0;
   }
  
-      
+   
+element.style {
+}
+button, input, optgroup, select, textarea{
+       width: 97px;
+   }   
 
   .form{
      width: 800px;
