@@ -71,3 +71,76 @@ $("#downloadpdf").mouseup(function() {
       $("#demo").remove();
     });
   });
+  var newText  = document.getSelection(constructSearch());
+          newCell.append(newText);
+
+
+
+
+
+
+var newCell  = newRow.insertCell(0);
+          var newText  = document.getElementById("search");
+          newCell.append(newText);
+
+
+
+<!-- <script>
+//   $("#table").on("click", "#downloadpdf", function() {
+//  $(this).closest("tr").remove();
+// });
+// </script>
+// <script>
+//   $(document).ready(function(){
+//   $("#downloadpdf").click(function(){
+//   });
+// });
+</script>
+
+<script> 
+$("#downloadpdf").mousedown(function() {
+    $("#search input").hide()
+  });
+$("#downloadpdf").mouseup(function() {
+    $("#search input").show()
+  });
+</script>
+    $(document).ready(function(){
+    
+    $("#downloadpdf").click(function(){
+        $(".search").css("display", "none");
+    });
+});
+  function generate() {
+    var doc = new jsPDF('p', 'pt', 'letter');
+    var htmlstring = '';
+    var tempVarToCheckPageHeight = 0;
+    var pageHeight = 0;
+    pageHeight = doc.internal.pageSize.height;
+    specialElementHandlers = {
+      // element with id of "bypass" - jQuery style selector  
+      '#bypassme': function (element, renderer) {
+        // true = "handled elsewhere, bypass text extraction"  
+        return true
+      }
+    };
+    doc.setLineWidth();
+    doc.autoTable({
+      html: '#table',
+      startY: 70,
+      // theme: 'grid',
+      styles: {
+        // minCellHeight: 40
+      }
+    })
+    doc.save('FetctData.pdf');
+  }
+ // document.getElementById("downloadexcel").addEventListener('click', function () {
+  //   var table2excel = new Table2Excel();
+  //   table2excel.export(document.querySelectorAll("#table"));
+  // });
+ $(document).ready(function () {
+    $("#btn").click(function () {
+      $("#demo").remove();
+    });
+  });
