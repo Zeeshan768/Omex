@@ -12,32 +12,36 @@
 </head>
 
 <body>
-  <div class="row alert alert-primary form">
-    <div class="input">
-      <div class="input_ssid">
-        <input name="ssid" value="7,5,9" id="ssid" placeholder="SSID"  type="text"
-          placeholder="Enter SSID"  class="form-control "/>
+  <div class="mx-auto w-75 p-3 row alert alert-primary">
+    <div class="d-flex p-2 bd-highlight">
+      <div class="mx-auto">
+        <input name="url" value="https://qa.omexsystems.com/omexwebsrv/api/msd/FindSymbolsByListShort" id="url" placeholder="url" type="text" 
+          class=" w-45 p-1 form-control" />
       </div>
-      <div class="input_secid">
-        <input name="secid" value="FB,AAPL,FB" id="secid" placeholder="SECID"  type="text"
-          placeholder="Enter SECID" class="form-control " />
+      <div class="mx-auto">
+        <input name="ssid" value="7,5,9" id="ssid" placeholder="SSID" type="text" placeholder="Enter SSID"
+          class=" w-45 p-1 form-control" />
       </div>
-      <div class="input_currency" >
-        <input type="text" name="currency" id="currency" placeholder="Currency" value="USD,USD,USD" class="form-control"/>
+      <div class="mx-auto">
+        <input name="secid" value="FB,AAPL,FB" id="secid" placeholder="SECID" type="text" placeholder="Enter SECID"
+          class="w-45 p-1 form-control " />
       </div>
-      <button type="text" onClick="fetchData()"class="btn btn-success">submit</button>
-      <div id="icons">
-        <img class="icon" src="./pngegg.png" id="downloadexcel" alt="excel icon" title="Download as excel file">
-        <img class="icon" src="./pngwing.com.png" id="downloadpdf" onclick="generate()" title="Download as pdf file" alt="pdf icon">
+      <div class="mx-auto">
+        <input type="text" name="currency" id="currency" placeholder="Currency" value="USD,USD,USD"
+          class="w-45 p-1 form-control" />
+      </div>
+      
+ <!-- _________________For download Excel and pdf icons as image and submit button________ -->     <button  id="btn" type="text" onClick="fetchData()" class="mw-100 btn mx-auto btn-success ">submit</button>
+      <div hidden id="demo">
+        <img class="icon btn-close-green" onclick="excel()" width="20px" height="20px" src="./pngegg.png" id="downloadexcel" alt="excel icon" title="Download as excel file">
+        <img class="icon" width="20px" height="20px" src="./pngwing.com.png" onclick="pdf()" id="downloadpdf"  title="Download as pdf file" alt="pdf icon" class="
+        form-control">
       </div>
     </div>
-   
-  </div>
-  <table id="table" class="table table-success table-striped table-sortable">
-    <thead class="table_header">
-    <thead ></thead>
 
-    <tbody></tbody>
+  </div>
+  <table id="table" class="w-75 table mx-auto table-success table-striped table-sortable">
+
   </table>
   <div>
   </div>
@@ -46,26 +50,33 @@
 
 </body>
 <script type="text/javascript">
-    $(document).ready(function () {
-    // Set div display to block
-    $(".btn-success").click(function () {
-      $(".icon").css("display", "block");
-    });
+  $(document).ready(function () {
+     // Set div display to block
+    // $("#btn").click(function () {
+    //   $("#demo").show();
+    //   // showbutton();
+    // });
+    
   });
+  
+  var url;
   var ssidList;
   var secidList;
   var currencyList;
   var body;
   var list;
+
   const spinner = document.getElementById("spinner");
+  const demo = document.getElementById("demo");
   async function fetchData() {
+   
     const ssid = document.getElementById("ssid").value;
     const secid = document.getElementById("secid").value;
     const currency = document.getElementById("currency").value;
     ssidList = ssid.split(",");
     secidList = secid.split(",");
     currencyList = currency.split(",");
-    console.log(ssidList, secidList, currencyList);
+    // console.log(ssidList, secidList, currencyList);
     body = JSON.stringify(
       ssidList.map((item, index) => ({
         SSID: item,
@@ -74,17 +85,17 @@
       }))
     );
     if (ssid === "" || secid === "" || currency === "") {
-      console.log("Empty");
       alert("Enter SSID SECID and Currency");
     } else {
       constructTable();
       spinner.removeAttribute("hidden");
+      demo.setAttribute("hidden","");
     }
   }
   async function fetchList(body) {
-    
+    var url = document.getElementById("url").value;
     const response = await fetch(
-      "https://qa.omexsystems.com/omexwebsrv/api/msd/FindSymbolsByListShort",
+          url,
       {
         method: "POST",
         body: body,
@@ -92,8 +103,8 @@
           "Content-type": "application/json; charset=UTF-8",
         },
       }
-    );
-    spinner.setAttribute("hidden", "");
+    ); 
+ 
     const data = await response.json();
     return data;
   }
@@ -110,19 +121,30 @@
       var row = $("<tr></tr>");
 
       for (var key in list[j]) {
-        console.log(key);
+        // console.log(key);
         row.append("<td>" + list[j][key] + "</td>");
       }
       $("tbody").append(row);
+      
     }
   }
+  // function showbutton() {
+  //   // get the element you want to add the button to
+  //   var myDiv = document.getElementById("demo");
+  //   var button = document.createElement("div");
+  //   button.innerHTML = `<img class="icon btn-close-green" onclick="excel()" width="20px" height="20px" src="./pngegg.png" id="downloadexcel" alt="excel icon" title="Download as excel file">
+  //        <img class="icon" width="20px" height="20px" src="./pngwing.com.png" onclick="pdf()" id="downloadpdf"  title="Download as pdf file" alt="pdf icon" class="
+  //        form-control">`;
+  //   myDiv.appendChild(button);
+  // }
+
 
   function constructSearch() {
-    $("table thead").append(`<tr id="search">
+    $("thead").append(`<tr id="search">
           <td>
             <input
+             class="text-center w-75 p-1"
               type="text"
-              class="inp"
               id="myInput0"
               onkeyup="myFunction(this, 0)"
               title="Type"
@@ -131,8 +153,8 @@
           </td>
           <td>
             <input
+            class="text-center w-75 p-1"
               type="text"
-              class="inp"
               id="myInput1"
               onkeyup="myFunction(this, 1)"
               title="Type"
@@ -142,7 +164,7 @@
           <td>
             <input
               type="text"
-              class="inp"
+              class="text-center w-75 p-1"
               id="myInput2"
               onkeyup="myFunction(this, 2)"
               title="Type"
@@ -152,7 +174,7 @@
           <td>
             <input
               type="text"
-              class="inp"
+              class="text-center w-45 p-1"
               id="myInput3"
               onkeyup="myFunction(this, 3)"
               title="Type"
@@ -162,7 +184,7 @@
           <td>
             <input
               type="text"
-              class="inp"
+              class="text-center w-75 p-1"
               id="myInput4"
               onkeyup="myFunction(this, 4)"
               title="Type"
@@ -172,7 +194,7 @@
           <td>
             <input
               type="text"
-              class="inp"
+              class="text-center w-75 p-1"
               id="myInput5"
               onkeyup="myFunction(this, 5)"
               title="Type"
@@ -182,7 +204,7 @@
           <td>
             <input
               type="text"
-              class="inp"
+              class="text-center w-75 p-1"
               id="myInput6"
               onkeyup="myFunction(this, 6)"
               title="Type"
@@ -193,51 +215,57 @@
   }
 
   async function constructTable() {
+
     document.getElementById(
       "table"
-    ).innerHTML = `<thead></thead><tbody></tbody>`;
+    ).innerHTML = `<thead id="tbl" class="tab text-center" ></thead><tbody  id="tbl2" class="tab text-center"></tbody>`;
     list = await fetchList(body);
     constructHeader(list[0]);
     constructSearch();
     constructBody(list);
-    function sortTableByColumn(table, column, asc = true) {
-    const dirModifier = asc ? 1 : -1;
-    const tBody = table.tBodies[0];
-    const rows = Array.from(tBody.querySelectorAll("tr"));
+    demo.removeAttribute("hidden","");
+    spinner.setAttribute("hidden","");
+    
+    // showbutton();
 
-    // Sort each row
-    const sortedRows = rows.sort((a, b) => {
-        const aColText = a.querySelector(`td:nth-child(${ column + 1 })`).textContent.trim();
-        const bColText = b.querySelector(`td:nth-child(${ column + 1 })`).textContent.trim();
+    function sortTableByColumn(table, column, asc = true) {
+      const dirModifier = asc ? 1 : -1;
+      const tBody = table.tBodies[0];
+      const rows = Array.from(tBody.querySelectorAll("tr"));
+
+      // Sort each row
+      const sortedRows = rows.sort((a, b) => {
+        const aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+        const bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
 
         return aColText > bColText ? (1 * dirModifier) : (-1 * dirModifier);
-    });
+      });
 
-    // Remove all existing TRs from the table
-    while (tBody.firstChild) {
+      // Remove all existing TRs from the table
+      while (tBody.firstChild) {
         tBody.removeChild(tBody.firstChild);
+      }
+
+      // Re-add the newly sorted rows
+      tBody.append(...sortedRows);
+
+      // Remember how the column is currently sorted
+      table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+      table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
+      table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
     }
 
-    // Re-add the newly sorted rows
-    tBody.append(...sortedRows);
-
-    // Remember how the column is currently sorted
-    table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
-    table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-asc", asc);
-    table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-desc", !asc);
-}
-
-document.querySelectorAll(".table-sortable th").forEach(headerCell => {
-    headerCell.addEventListener("click", () => {
+    document.querySelectorAll(".table-sortable th").forEach(headerCell => {
+      headerCell.addEventListener("click", () => {
         const tableElement = headerCell.parentElement.parentElement.parentElement;
         const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
         const currentIsAscending = headerCell.classList.contains("th-sort-asc");
 
         sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+      });
     });
-});
   }
-  
+
   let filters = ["", ""];
 
   function myFunction(thisInput, thisIndex) {
@@ -245,12 +273,8 @@ document.querySelectorAll(".table-sortable th").forEach(headerCell => {
 
     filterTable();
   }
-  $(document).ready(function(){
-    
-    $(".").click(function(){
-        $(".icons").css("display", "block");
-    });
-});
+
+
 
   function filterTable() {
     var table = document.getElementById("table");
@@ -270,49 +294,59 @@ document.querySelectorAll(".table-sortable th").forEach(headerCell => {
       row.style.display = isRowVisible ? "" : "none";
     }
   }
-  document.getElementById("downloadexcel").addEventListener('click', function () {
-    var table2excel = new Table2Excel();
-    table2excel.export(document.querySelectorAll("#table"));
-  });
+</script>
+ <!-- ________________For download Excel start_____Button at line 31 ________ --> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+<script>
+  function excel() {
+    var data = document.getElementById("table");
+    document.getElementById("table").deleteRow(1);
+    var fp = XLSX.utils.table_to_book(data, { sheet: 'MMM' });
+    XLSX.write(fp, {
+      bookType: 'xlsx',
+      type: 'base64'
+    });
+    XLSX.writeFile(fp, 'test.xlsx');
+    var tableRef = document.getElementById('table').getElementsByTagName('thead')[0];
+    var newText = document.getSelection(constructSearch());
+    newCell.append(newText);
+  }
 
 </script>
-<script src="script.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
-<script>
-  function generate() {
-    var doc = new jsPDF('p', 'pt', 'letter');
-    var htmlstring = '';
-    var tempVarToCheckPageHeight = 0;
-    var pageHeight = 0;
-    pageHeight = doc.internal.pageSize.height;
-    specialElementHandlers = {
-      // element with id of "bypass" - jQuery style selector  
-      '#bypassme': function (element, renderer) {
-        // true = "handled elsewhere, bypass text extraction"  
-        return true
+<!-- ________________For download Excel end_____________ -->
+
+
+
+
+
+
+
+
+<!-- ...............for download pdf ....Button is at line 30..... -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script type="text/javascript">
+  $("body").on("click", "#downloadpdf", function () {
+    document.getElementById("table").deleteRow(1);
+    html2canvas($("#table")[0], {
+      onrendered: function (canvas) {
+        var data = canvas.toDataURL();
+        var docDefinition = {
+          content: [{
+            image: data,
+            width: 500
+          }]
+        };
+        pdfMake.createPdf(docDefinition).download("Table.pdf");
+        var tableRef = document.getElementById('table').getElementsByTagName('thead')[0];
+        var newText = document.getSelection(constructSearch());
+        newCell.insertRow(newText);
       }
-    };
-    margins = {
-      top: 150,
-      bottom: 60,
-      left: 40,
-      right: 40,
-      width: 600
-    };
-    var y = 20;
-    doc.setLineWidth(2);
-    doc.autoTable({
-      html: '#table',
-      startY: 70,
-      theme: 'grid',
-      styles: {
-        minCellHeight: 40
-      }
-    })
-    doc.save('FetctData.pdf');
-  }
-  
+    });
+  });
 </script>
+<!-- ...............for download pdf  end....Butto is at line 30..... -->
 
 </html>
