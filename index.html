@@ -15,22 +15,37 @@
   <div class="mx-auto w-75 p-3 row alert alert-primary">
     <div class="d-flex p-2 bd-highlight">
       <div class="mx-auto">
-        <input name="url" value="https://qa.omexsystems.com/omexwebsrv/api/msd/FindSymbolsByListShort" id="url" placeholder="url" type="text" 
+        <input name="url" value="https://qa.omexsystems.com/IntlFeeSvc/FeeCalc?showDetail=true" id="url" placeholder="url" type="text" 
           class=" w-45 p-1 form-control" />
       </div>
       <div class="mx-auto">
-        <input name="ssid" value="7,5,9" id="ssid" placeholder="SSID" type="text" placeholder="Enter SSID"
+        <input name="curency" value="HKD" id="currency" placeholder="currency" type="text" placeholder="Enter currency"
           class=" w-45 p-1 form-control" />
       </div>
       <div class="mx-auto">
-        <input name="secid" value="FB,AAPL,FB" id="secid" placeholder="SECID" type="text" placeholder="Enter SECID"
+        <input name="country_code" value="HKG" id="country_code" placeholder="country_code" type="text" placeholder="Enter country_code"
           class="w-45 p-1 form-control " />
       </div>
       <div class="mx-auto">
-        <input type="text" name="currency" id="currency" placeholder="Currency" value="USD,USD,USD"
+        <input type="text" name="side" id="side" placeholder="side" value="B"
           class="w-45 p-1 form-control" />
       </div>
-      
+      <div class="mx-auto">
+        <input type="text" name="qty" id="qty" placeholder="qty" value="100"
+          class="w-45 p-1 form-control" />
+      </div>
+      <div class="mx-auto">
+        <input type="text" name="px" id="px" placeholder="px" value="10"
+          class="w-45 p-1 form-control" />
+      </div>
+      <div class="mx-auto">
+        <input type="text" name="comm" id="comm" placeholder="comm" value="0"
+          class="w-45 p-1 form-control" />
+      </div>
+      <div class="mx-auto">
+        <input type="text" name="rowID" id="rowID" placeholder="rowID" value="Row_1"
+          class="w-45 p-1 form-control" />
+      </div>  
  <!-- _________________For download Excel and pdf icons as image and submit button________ -->     <button  id="btn" type="text" onClick="fetchData()" class="mw-100 btn mx-auto btn-success ">submit</button>
       <div hidden id="demo">
         <img class="icon btn-close-green" onclick="excel()" width="20px" height="20px" src="./pngegg.png" id="downloadexcel" alt="excel icon" title="Download as excel file">
@@ -50,41 +65,58 @@
 
 </body>
 <script type="text/javascript">
-  $(document).ready(function () {
-     // Set div display to block
-    // $("#btn").click(function () {
-    //   $("#demo").show();
-    //   // showbutton();
-    // });
-    
-  });
-  
   var url;
-  var ssidList;
-  var secidList;
   var currencyList;
+  var country_codeList;
+  var sideList;
+  var qtyList;
+  var pxList;
+  var commList;
+  var rowIDList;
   var body;
   var list;
-
   const spinner = document.getElementById("spinner");
   const demo = document.getElementById("demo");
   async function fetchData() {
    
-    const ssid = document.getElementById("ssid").value;
-    const secid = document.getElementById("secid").value;
+    [  {
+    "currency": "HKD",
+    "country_code": "HKG",
+    "side": "B",
+    "qty": 100,
+    "px": 10,
+    "comm": 0,
+    "rowID": "Row_1"
+  }]
     const currency = document.getElementById("currency").value;
-    ssidList = ssid.split(",");
-    secidList = secid.split(",");
+    const country_code = document.getElementById("country_code").value;
+    const side = document.getElementById("side").value;
+    const qty = document.getElementById("qty").value;
+    const px = document.getElementById("px").value;
+    const comm = document.getElementById("comm").value;
+    const rowID = document.getElementById("rowID").value;
     currencyList = currency.split(",");
-    // console.log(ssidList, secidList, currencyList);
+    country_codeList = country_code.split(",");
+    sideList = side.split(",");
+    qtyList = qty.split(",");
+    pxList = px.split(",");
+    commList = comm.split(",");
+    rowIDList = rowID.split(",");
+    
+
     body = JSON.stringify(
-      ssidList.map((item, index) => ({
-        SSID: item,
-        SECId: secidList[index],
-        Currency: currencyList[index],
+      currencyList.map((item, index) => ({
+        CURRENCY: item,
+        currencyLis: currencyList[index],
+        countrycode:    country_codeList[index],
+        sidelist : sideList[index],
+        qtylist:  qtyList[index],
+        pxlist:  pxList[index],
+        commlist:  commList[index],
+        eowidlist:  rowIDList[index],
       }))
     );
-    if (ssid === "" || secid === "" || currency === "") {
+    if (currency === "" || country_code === "" || side === "" || qty === "" || px === "" || comm === "" || rowID === "") {
       alert("Enter SSID SECID and Currency");
     } else {
       constructTable();
@@ -108,6 +140,7 @@
     const data = await response.json();
     return data;
   }
+  console.log(currencyList,rowIDList,currencyList);
   function constructHeader(list) {
     var header = $("<tr></tr>");
     for (var key in list) {
