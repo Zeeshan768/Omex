@@ -57,9 +57,12 @@
 /* +++++++++++++code for demo======= */
 #demo{
   display: flex;
-  flex-direction: column;
   height: 27px;
   width: 52px;
   margin: 0;
   padding: 0;
+}
+.w-50{
+  display: none;
+
 }
